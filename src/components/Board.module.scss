@@ -17,7 +17,7 @@
 		width: 100%;
 		height: 100%;
 
-		* {
+		div {
 			position: absolute;
 
 			width: 20px;
@@ -26,9 +26,9 @@
 			background-image: url(../assets/arrow.svg);
 			background-size: 100%;
 
-			opacity: .5;
+			opacity: 0.5;
 
-			transition: opacity .1s;
+			transition: opacity 0.1s;
 
 			cursor: pointer;
 
@@ -47,6 +47,36 @@
 				opacity: 1;
 			}
 		}
+	}
+
+	&__preview {
+		position: absolute;
+		top: 30px;
+		left: 30px;
+
+		border: none;
+		background-color: transparent;
+
+		font-size: 15px;
+		text-decoration: underline;
+
+		cursor: pointer;
+	}
+
+	&__reset {
+		position: absolute;
+		top: 30px;
+		right: 30px;
+
+		border: none;
+		background-color: transparent;
+
+		font-size: 15px;
+		text-decoration: underline;
+
+		color: red;
+
+		cursor: pointer;
 	}
 
 	&__left {
@@ -130,16 +160,17 @@
 
 		position: relative;
 
-		&:hover div {
-			border: 1px solid rgba(0, 0, 0, 0.3);
-		}
-
-		div {
+		&-side {
 			width: 100%;
 			height: 100%;
 
 			background-size: 100%;
 			border: 1px solid rgba(0, 0, 0, 0.1);
+
+			&_active {
+				composes: board__cell-side;
+				border: none !important;
+			}
 
 			position: absolute;
 
@@ -165,7 +196,7 @@
 			}
 		}
 
-		&:hover div {
+		&:hover &-side {
 			border: 1px solid rgba(0, 0, 0, 0.5);
 
 			&:nth-child(1) {

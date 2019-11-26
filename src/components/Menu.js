@@ -11,6 +11,7 @@ import {
 	setResourcesType,
 	$currentResource,
 	setResource,
+	resetResource,
 } from '../store';
 
 const Menu = () => {
@@ -34,6 +35,8 @@ const Menu = () => {
 	useEffect(() => {
 		if (currentResource) {
 			setImage(allResourcesList.find(({ id }) => id === currentResource).image);
+		} else {
+			setImage(null)
 		}
 	}, [currentResource]);
 
@@ -63,8 +66,11 @@ const Menu = () => {
 					</li>
 				))}
 			</ul>
-			<div className={style.menu__current}>
-				<img src={image} alt="" />
+			<div>
+				<div className={style.menu__current}>
+					<img src={image} alt="" />
+				</div>
+				{image && <div className={style.menu__reset} onClick={resetResource}></div>}
 			</div>
 		</div>
 	);

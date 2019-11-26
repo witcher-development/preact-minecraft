@@ -3,13 +3,16 @@ import { useState, useEffect } from 'preact/compat';
 import { useStore } from 'effector-react';
 
 import style from './Board.module.scss';
-import { $cube, setCell } from '../store';
+import { $cube, setCell, resetCube } from '../store';
 
 const Board = () => {
 	const [shiftIsPressed, setShift] = useState(false);
 	const [rotateX, setRotateX] = useState(0);
 	const [rotateY, setRotateY] = useState(0);
 	const [currentLayer, setCurrentLayer] = useState(0);
+
+	const [preview, setPreview] = useState(false);
+
 	const cube = useStore($cube);
 
 	const handleKeyPress = (e) => {
@@ -41,8 +44,10 @@ const Board = () => {
 			setShift(true);
 		}
 	};
-	const chooseCell = (z, y, x) => {
-		setCell({ z, y, x });
+	const reset = () => {
+		resetCube();
+		setRotateX(0);
+		setRotateY(0);
 	};
 
 	useEffect(() => {
@@ -55,28 +60,30 @@ const Board = () => {
 		};
 	}, [rotateX, rotateY, shiftIsPressed, currentLayer]);
 
-	useEffect(() => {
-		console.log('test');
-	}, [cube]);
+	// useEffect(() => {
+	// 	console.log('test');
+	// }, [cube]);
 
 	return (
 		<div className={style.board}>
 			<div className={style.board__controls}>
+				<button className={style.board__preview} onClick={() => setPreview(!preview)}>{preview ? 'Editor mode' : 'Preview mode'}</button>
+				<button className={style.board__reset} onClick={reset}>Reset</button>
 				<div
 					className={style.board__left}
-					onClick={() => setRotateY(rotateY - 90)}
-				></div>
-				<div
-					className={style.board__right}
 					onClick={() => setRotateY(rotateY + 90)}
 				></div>
 				<div
+					className={style.board__right}
+					onClick={() => setRotateY(rotateY - 90)}
+				></div>
+				<div
 					className={style.board__top}
-					onClick={() => setRotateX(rotateX + 90)}
+					onClick={() => setRotateX(rotateX - 90)}
 				></div>
 				<div
 					className={style.board__down}
-					onClick={() => setRotateX(rotateX - 90)}
+					onClick={() => setRotateX(rotateX + 90)}
 				></div>
 			</div>
 			<div
@@ -84,29 +91,29 @@ const Board = () => {
 				style={{ transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }}
 			>
 				<ul className={style.board__layers}>
-					{cube.map((layer, i1) => (
+					{cube.map((layer, z) => (
 						<li
-							key={i1}
+							key={z}
 							className={
-								currentLayer > i1
+								currentLayer > z
 									? style.board__layer_hidden
 									: style.board__layer
 							}
 						>
-							<span>{i1}</span>
+							<span>{z}</span>
 							<ul className={style.board__rows}>
-								{layer.map((row, i2) => (
-									<li key={i2} className={style.board__row}>
+								{layer.map((row, y) => (
+									<li key={y} className={style.board__row}>
 										<ul className={style.board__cells}>
-											{row.map((cell, i3) => (
+											{row.map((cell, x) => (
 												<li
-													key={i3}
+													key={x}
 													className={style.board__cell}
-													onClick={() => chooseCell(i1, i2, i3)}
+													onClick={() => !preview && setCell({ z, y, x })}
 												>
 													{[...Array(6)].map(() => (
 														<div
-															className={style['board__cell-side']}
+															className={cell.value || preview ? style['board__cell-side_active'] : style['board__cell-side']}
 															style={{ backgroundImage: `url(${cell.value})` }}
 														></div>
 													))}
