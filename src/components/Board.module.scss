@@ -6,6 +6,77 @@
 	width: 100%;
 	height: 100%;
 
+	position: relative;
+
+	&__controls {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+
+		width: 100%;
+		height: 100%;
+
+		* {
+			position: absolute;
+
+			width: 20px;
+			height: 20px;
+
+			background-image: url(../assets/arrow.svg);
+			background-size: 100%;
+
+			opacity: .5;
+
+			transition: opacity .1s;
+
+			cursor: pointer;
+
+			&:before {
+				content: '';
+
+				display: block;
+
+				width: 100%;
+				height: 100%;
+
+				transform: scale(5);
+			}
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+	}
+
+	&__left {
+		top: 50%;
+		left: 15%;
+
+		transform: translateY(-50%);
+	}
+
+	&__right {
+		top: 50%;
+		right: 15%;
+
+		transform: translateY(-50%) rotate(180deg);
+	}
+
+	&__top {
+		top: 15%;
+		left: 50%;
+
+		transform: translateX(-50%) rotate(90deg);
+	}
+
+	&__down {
+		bottom: 15%;
+		left: 50%;
+
+		transform: translateX(-50%) rotate(-90deg);
+	}
+
 	perspective: 600px;
 
 	&__cube {
@@ -43,6 +114,10 @@
 		&:nth-child(3) {
 			transform: translateZ(-200px);
 		}
+
+		&_hidden {
+			display: none;
+		}
 	}
 
 	&__cells {
@@ -63,6 +138,7 @@
 			width: 100%;
 			height: 100%;
 
+			background-size: 100%;
 			border: 1px solid rgba(0, 0, 0, 0.1);
 
 			position: absolute;

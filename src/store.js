@@ -9,6 +9,7 @@ const app = createDomain();
 
 const setResourcesType = app.event();
 const setResource = app.event();
+const setCell = app.event();
 
 const resources = [
 	{
@@ -58,7 +59,16 @@ const $currentResource = app.store(null);
 $currentResource.on(setResource, (_, id) => id);
 
 const $cube = app.store(cube);
-// $cube.on(setResource, (_, id) => id);
+$cube.on(setCell, (cube, { z, y, x }) => {
+	const image = $allResourcesList
+		.getState()
+		.find(({ id }) => id === $currentResource.getState()).image;
+
+	const newCube = JSON.parse(JSON.stringify(cube));
+
+	newCube[z][y][x].value = image;
+	return newCube;
+});
 
 export {
 	$resources,
@@ -68,4 +78,5 @@ export {
 	$currentResource,
 	setResource,
 	$cube,
+	setCell,
 };
