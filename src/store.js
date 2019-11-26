@@ -39,8 +39,11 @@ const resources = [
 	},
 ];
 
+const row = [...Array(3)].map(() => ({ value: null }));
+const layer = [row, row, row];
+const cube = [layer, layer, layer];
+
 const $resources = app.store(resources);
-console.log($resources.map);
 const $allResourcesList = $resources.map((resourcesData) =>
 	resourcesData.reduce(
 		(array, currentObject) => [...array, ...currentObject.items],
@@ -54,6 +57,9 @@ $currentType.on(setResourcesType, (_, type) => type);
 const $currentResource = app.store(null);
 $currentResource.on(setResource, (_, id) => id);
 
+const $cube = app.store(cube);
+// $cube.on(setResource, (_, id) => id);
+
 export {
 	$resources,
 	$allResourcesList,
@@ -61,4 +67,5 @@ export {
 	setResourcesType,
 	$currentResource,
 	setResource,
+	$cube,
 };
